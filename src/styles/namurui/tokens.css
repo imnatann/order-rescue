@@ -1,0 +1,209 @@
+/* ---------------------------------------------------------------------------
+ * NamurUI – design tokens
+ *
+ * The page-level layer the gallery and any host app sit on. The library's own
+ * components carry their styles inline (one .tsx file each, injected through
+ * <style href="ui-…" precedence="default">) and read these variables where a
+ * sheet was authored against tokens.
+ *
+ * Identity: warm-dark *Ember*. See DESIGN.md for the reason behind each value.
+ * ------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/inter-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/inter-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/inter-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/inter-700.woff2") format("woff2");
+}
+
+:root {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Display is Georgia only in gallery chrome: the ember identity needs warmth
+   * a neutral grotesque cannot supply, and Georgia ships on every target. */
+  --font-display: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --bg: #faf7f4;
+  --panel: #fffdfb;
+  --card: #ffffff;
+  --preview: #fdfaf7;
+  --panel-raised: #ffffff;
+  --raised: #ffffff;
+  --muted-bg: #7a4a1c0a;
+  --hover-bg: #7a4a1c12;
+
+  --text: #1a1410;
+  --text-muted: #6f625a;
+  --text-subtle: #1a141099;
+
+  --border: #e8e0d7;
+  --border-soft: #1a14101a;
+  --card-stroke: #1a14100e;
+
+  --primary: #1a1410;
+  --primary-fg: #fffdfb;
+  --accent: #c2410c;
+  --accent-hover: #9a3412;
+  --accent-fg: #fffdfb;
+  --accent-soft: #c2410c1a;
+
+  --success: #1a7a4a;
+  --warning: #9a6410;
+  --danger: #b3261e;
+
+  /* Syntax roles for a code panel. Six of them, because a code view has to
+   * separate keyword, string, comment, number, function and type at a glance;
+   * the neutral set cannot do that and ember stays reserved for the accent.
+   * Warm-shifted from the usual cool one-light palette so a code block keeps the
+   * identity's heat, and each value clears 4.5:1 on --preview in its own theme. */
+  --code-keyword: #8f3f7a;
+  --code-string: #1f7a4d;
+  --code-comment: #7a6b5f;
+  --code-number: #97590f;
+  --code-function: #146b64;
+  --code-type: #8a5a2b;
+
+  --pro-bg: #fff1e8;
+
+  --radius-panel: 20px;
+  --radius-card: 16px;
+  --radius-preview: 12px;
+  --radius-input: 12px;
+  --radius-control: 8px;
+  --radius-pill: 999px;
+
+  --panel-shadow: 0 1px 0 #3d1f0a0a, 0 2px 1px -1px #3d1f0a0d;
+  --shadow-card: 0 1px 1.5px #3d1f0a0a, inset 0 -1px 0 #3d1f0a0f;
+  --shadow-pop: 0 4px 42px #3d1f0a12, 0 2px 12px #3d1f0a0a;
+
+  /* A single low-contrast grain implies a physical surface rather than a
+   * flat fill. Applied to gallery chrome only, never behind component data. */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  --grain-opacity: 0.035;
+
+  --ease: var(--nm-ease-out);
+  color-scheme: light;
+}
+
+[data-theme="dark"],
+.dark {
+  --bg: #14100d;
+  --panel: #1a1512;
+  --card: #201a15;
+  --preview: #26201a;
+  --panel-raised: #231d18;
+  --raised: #231d18;
+  --muted-bg: #ffffff0d;
+  --hover-bg: #ffffff12;
+
+  --text: #f4ece4;
+  --text-muted: #a2958a;
+  --text-subtle: #f4ece48c;
+
+  --border: #33291f;
+  --border-soft: #ffffff12;
+  --card-stroke: #ffffff0d;
+
+  --primary: #f4ece4;
+  --primary-fg: #14100d;
+  --accent: #ff6b35;
+  --accent-hover: #ff8256;
+  --accent-fg: #1a0f08;
+  --accent-soft: #ff6b3524;
+
+  --success: #4f9d6e;
+  --warning: #d99530;
+  --danger: #e87068;
+
+  /* Same six roles for the dark surface; each clears 4.5:1 on --preview. */
+  --code-keyword: #e8a1d3;
+  --code-string: #7ecb9b;
+  --code-comment: #a89a8d;
+  --code-number: #e5b169;
+  --code-function: #6fc7bd;
+  --code-type: #d99a6c;
+
+  --pro-bg: #ff6b351f;
+
+  /* Radii do not change with the theme, but each theme block states the scale
+   * so a host can retune one step for one theme without affecting the other. */
+  --radius-panel: 20px;
+  --radius-card: 16px;
+  --radius-preview: 12px;
+  --radius-input: 12px;
+  --radius-control: 8px;
+  --radius-pill: 999px;
+
+  --panel-shadow: 0 1px 0 #00000073, 0 2px 1px -1px #00000080;
+  --shadow-card: 0 1px 1.5px #0000004d, inset 0 -1px 0 #ffffff0a;
+  --shadow-pop: 0 4px 42px #00000066, 0 0 0 1px #ffffff14;
+
+  --grain-opacity: 0.05;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

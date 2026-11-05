@@ -1,0 +1,101 @@
+/* ---------------------------------------------------------------------------
+ * NamurUI – motion tokens
+ *
+ * Motion is this product's subject, so the layer is explicit rather than
+ * incidental. Every duration and curve a component uses comes from here.
+ * The reconstructed stylesheets were written with the CSS default `ease`
+ * curve, which spends most of its budget on a slow start; scripts/retime.mjs
+ * repoints them at these tokens.
+ *
+ * See DESIGN.md § Motion for the reasoning behind each value.
+ * ------------------------------------------------------------------------- */
+
+:root {
+  /* Duration scale. Six steps, each ~1.5x the last, so timing differences read
+   * as deliberate rather than arbitrary. */
+  --nm-dur-1: 90ms; /* press, hover-in — must feel instant */
+  --nm-dur-2: 160ms; /* hover, focus ring */
+  --nm-dur-3: 240ms; /* element enter/exit */
+  --nm-dur-4: 380ms; /* surface change: panel, sheet, drawer */
+  --nm-dur-5: 620ms; /* choreographed reveal: fan-out, graph draw */
+  --nm-dur-6: 1100ms; /* ambience: breathe, idle pulse */
+
+  /* Curves. */
+  --nm-ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* entering: fast in, long settle */
+  --nm-ease-in: cubic-bezier(0.55, 0, 0.68, 0.19); /* leaving */
+  --nm-ease-both: cubic-bezier(0.65, 0, 0.35, 1); /* moving within the screen */
+  --nm-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* spawn, pop, attach */
+  --nm-ease-soft: cubic-bezier(0.4, 0, 0.2, 1); /* ambient loops */
+
+  /* Stagger unit for choreographed groups (a fan-out, a list reveal). */
+  --nm-stagger: 45ms;
+}
+
+/* Ambient loop: the one update rate the whole gallery shares. */
+@property --nm-spin {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* ---------------------------------------------------------------------------
+ * Reduced motion
+ *
+ * Every component already ships its own reduced-motion block. This is the
+ * floor underneath them: no transform may move and no duration may exceed
+ * the instant step. Colour and opacity changes survive, because they carry
+ * meaning without moving anything.
+ * ------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --nm-dur-1: 60ms;
+    --nm-dur-2: 60ms;
+    --nm-dur-3: 60ms;
+    --nm-dur-4: 60ms;
+    --nm-dur-5: 60ms;
+    --nm-dur-6: 60ms;
+    --nm-spring: linear;
+    --nm-stagger: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Ambient decoration has no informational payload: remove it outright
+   * rather than freezing it mid-frame, which reads as a broken image. */
+  [class*="breathe"],
+  [class*="shimmer"],
+  [class*="pulse"] {
+    animation: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * The grain surface
+ *
+ * An ember identity implies something physical; a perfectly flat charcoal
+ * reads as a screenshot of a surface. Applied to gallery chrome only, never
+ * behind the user's own data.
+ * ------------------------------------------------------------------------- */
+
+.nm-grain {
+  position: relative;
+}
+
+.nm-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--grain);
+  opacity: var(--grain-opacity);
+  mix-blend-mode: soft-light;
+  z-index: 0;
+}

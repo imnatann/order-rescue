@@ -1,0 +1,17 @@
+services:
+  app:
+    build: .
+    init: true
+    restart: unless-stopped
+    env_file: .env.production
+    ports:
+      - "127.0.0.1:3000:3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - order-rescue-data:/app/data
+      - order-rescue-backups:/app/backups
+    stop_grace_period: 20s
+volumes:
+  order-rescue-data:
+  order-rescue-backups:

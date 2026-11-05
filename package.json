@@ -1,0 +1,47 @@
+{
+  "name": "order-rescue",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node scripts/start.mjs --dev",
+    "build": "next build && node scripts/prepare-standalone.mjs",
+    "start": "node scripts/start.mjs",
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit",
+    "dev:web": "next dev",
+    "start:web": "node scripts/start.mjs --web-only",
+    "worker": "node --conditions=react-server --import tsx scripts/worker.ts",
+    "db:migrate": "node --conditions=react-server --import tsx scripts/migrate.ts",
+    "db:seed": "node --conditions=react-server --import tsx scripts/seed.ts",
+    "admin:create": "node --conditions=react-server --import tsx scripts/bootstrap.ts",
+    "test": "node --conditions=react-server --import tsx --test --test-concurrency=1 tests/*.test.ts",
+    "check": "npm run typecheck && npm run lint && npm test && npm run build",
+    "db:backup": "node --conditions=react-server --import tsx scripts/backup.ts",
+    "db:restore": "node --conditions=react-server --import tsx scripts/restore.ts",
+    "format": "prettier --write src/server src/features/dashboard src/app scripts tests src/proxy.ts next.config.ts",
+    "test:live": "node --conditions=react-server --import tsx tests/live-provider.ts",
+    "test:production": "node --conditions=react-server --import tsx tests/production-smoke.ts"
+  },
+  "dependencies": {
+    "next": "16.4.5",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "^0.0.1",
+    "tsx": "^4.23.15",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/turbopack": "^4",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.5",
+    "prettier": "^3.9.10",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=24 <27"
+  }
+}
